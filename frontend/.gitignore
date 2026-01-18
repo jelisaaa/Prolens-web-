@@ -1,0 +1,53 @@
+# =========================
+# Dependencies
+# =========================
+node_modules/
+.pnp/
+.pnp.js
+
+# =========================
+# Build outputs
+# =========================
+dist/
+build/
+.vite/
+
+# =========================
+# Environment variables
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Logs
+# =========================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+# OS / Editor files
+# =========================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# TypeScript
+# =========================
+*.tsbuildinfo
+
+# =========================
+# Tailwind / PostCSS cache
+# =========================
+.cache/
+
+# =========================
+# Coverage reports
+# =========================
+coverage/
