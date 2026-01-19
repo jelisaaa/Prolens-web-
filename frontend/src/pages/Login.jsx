@@ -40,7 +40,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      // 🔗 API call here later
+      
       console.log("Login data:", formData);
 
       toast.success("Login successful!");
@@ -55,9 +55,9 @@ const Login = () => {
   return (
     <div className="flex min-h-screen">
       
-      {/* LEFT SIDE: Brand at Top, Image Centered */}
+      
       <div className="hidden lg:flex lg:w-1/2 flex-col bg-gray-900 p-12 text-white">
-        {/* Top: Branding */}
+        
         <div className="mb-8">
           <h1 className="text-4xl font-bold tracking-tight">ProLens</h1>
           <p className="text-gray-400 mt-2 text-lg">
@@ -65,7 +65,7 @@ const Login = () => {
           </p>
         </div>
 
-        {/* Middle: Perfectly Centered Image */}
+        
         <div className="flex-1 flex items-center justify-center">
           <img
             src={imageImage}
@@ -73,10 +73,10 @@ const Login = () => {
             className="max-w-full max-h-[500px] object-contain rounded-2xl shadow-2xl transition-transform hover:scale-105 duration-500"
           />
         </div>
-        
+
       </div>
 
-      {/* RIGHT SIDE: Centered Form on Grey Background */}
+      
       <div className="w-full lg:w-1/2 flex items-center justify-center bg-gray-100 p-8 lg:p-16">
         <div className="w-full max-w-md bg-white p-10 rounded-3xl shadow-xl">
           <div className="text-center mb-8">
