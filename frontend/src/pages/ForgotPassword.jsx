@@ -5,6 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate(); // Added for navigation after success
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,14 +17,35 @@ const ForgotPassword = () => {
 
     setLoading(true);
 
+    // --- UPDATED START: Talking to Backend ---
     try {
-      console.log("Reset link requested for:", email);
-      toast.success("Reset link sent to your email!");
+      // Calling your backend API to trigger the OTP generation and database update
+      const response = await fetch("http://localhost:5000/api/user/forgot-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast.success("OTP sent to your email!");
+        // Navigate to the reset-password page and pass the email in 'state'
+        navigate("/reset-password", { state: { email } });
+      } else {
+        // This catches errors like "User not found" sent from your controller
+        toast.error(data.message || "Failed to send reset link");
+      }
     } catch (error) {
-      toast.error("Failed to send reset link");
+      // This catches connection issues (e.g., backend server is not running)
+      console.error("Connection Error:", error);
+      toast.error("Server is not responding. Check your backend!");
     } finally {
       setLoading(false);
     }
+    // --- UPDATED END ---
   };
 
   return (
