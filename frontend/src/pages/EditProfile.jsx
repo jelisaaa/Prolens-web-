@@ -7,9 +7,7 @@ import HeaderCard from "../component/dashboard/HeaderCard";
 const EditProfile = () => {
   const navigate = useNavigate();
   const location = useLocation();
-
-  // ProLens might require specific fields like 'Member Type' or 'Business Name' 
-  // depending on your rental system logic.
+  
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -25,8 +23,8 @@ const EditProfile = () => {
     }
     const fetchProfile = async () => {
       try {
-        const { data } = await getProfileApi();
-        setFormData(data);
+        const response = await getProfileApi();
+        setFormData(response.data.data);
       } catch (error) {
         toast.error("Failed to sync profile data");
       }
@@ -42,9 +40,10 @@ const EditProfile = () => {
 
   const handleSave = async () => {
     try {
-      await updateProfileApi(formData);
+      const response = await updateProfileApi(formData);
+      console.log("Updated profile response:",response.data);
       toast.success("ProLens profile updated!");
-      navigate("/profile");
+      navigate("/profile",{ state: {updatedProfile:response.data.updatedUser} });
     } catch (error) {
       toast.error(
         error.response?.data?.message || "Error updating equipment rental profile"
@@ -57,7 +56,7 @@ const EditProfile = () => {
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6">
         
         <div className="md:w-1/4">
-          <HeaderCard />
+          <HeaderCard user ={formData}/>
         </div>
 
         <div className="md:w-3/4 space-y-6">
@@ -121,7 +120,7 @@ const EditProfile = () => {
                 <input
                   type="date"
                   name="dob"
-                  value={formData.dob}
+                  value={formData.dob || ""}
                   onChange={handleChange}
                   className="w-full rounded-xl border border-slate-200 px-4 py-2.5 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all bg-slate-50/50 text-slate-600"
                 />
@@ -133,7 +132,7 @@ const EditProfile = () => {
                 </label>
                 <select
                   name="gender"
-                  value={formData.gender}
+                  value={formData.gender || ""}
                   onChange={handleChange}
                   className="w-full rounded-xl border border-slate-200 px-4 py-2.5 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all bg-slate-50/50 text-slate-600"
                 >

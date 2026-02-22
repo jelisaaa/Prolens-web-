@@ -18,24 +18,34 @@ const Profile = () => {
   });
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const { data } = await getProfileApi();
-        setUser(data);
-      } catch (error) {
-        toast.error("Failed to load profile");
-        console.error("PROFILE LOAD ERROR:", error.response?.data);
-      }
-    };
-    fetchProfile();
-  }, []);
+    if (location.state?.updatedProfile) {
+      setUser(location.state.updatedProfile);
+    } else {
+      const fetchProfile = async () => {
+        try {
+          const { data } = await getProfileApi();
+          setUser({
+            username: data.username || "",
+            email: data.email || "",
+            phoneNumber: data.phoneNumber || "",
+            address: data.address || "",
+            dob: data.dob || "",
+            gender: data.gender || "",
+          });
+        } catch (error) {
+          toast.error("Failed to load profile");
+        }
+      };
+      fetchProfile();
+    }
+  }, [location.state]);
 
   return (
     <div className="min-h-screen bg-[#f3f4f6] text-slate-900 font-sans">
       <div className="max-w-7xl mx-auto p-6 flex flex-col md:flex-row gap-8">
-        
+
         <div className="md:w-1/4">
-          <HeaderCard />
+          <HeaderCard user ={user} />
         </div>
 
         <div className="md:w-3/4 space-y-6">
@@ -49,13 +59,13 @@ const Profile = () => {
             </div>
 
             <div className="mt-8">
-                <button 
-                    onClick={() => navigate("/editprofile")}
-                    className="flex items-center gap-2 px-8 py-3 bg-slate-900 text-white rounded-full text-xs font-bold uppercase tracking-widest hover:bg-slate-700 transition-all active:scale-95"
-                >
-                <Edit3 size={14} /> Edit your profile 
-                </button>
-                </div>
+              <button
+                onClick={() => navigate("/editprofile")}
+                className="flex items-center gap-2 px-8 py-3 bg-slate-900 text-white rounded-full text-xs font-bold uppercase tracking-widest hover:bg-slate-700 transition-all active:scale-95"
+              >
+                <Edit3 size={14} /> Edit your profile
+              </button>
+            </div>
 
             <div className="flex flex-col gap-1 text-center md:text-left">
               <h1 className="text-3xl md:text-5xl font-black tracking-tighter text-slate-950">
@@ -77,11 +87,11 @@ const Profile = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
               {[
-                { label: "Username", icon: <User size={14}/>, value: user.username },
-                { label: "Email Address", icon: <Mail size={14}/>, value: user.email },
-                { label: "Phone Number", icon: <Phone size={14}/>, value: user.phoneNumber },
-                { label: "Date of Birth", icon: <Calendar size={14}/>, value: user.dob },
-                { label: "Gender", icon: <Camera size={14}/>, value: user.gender },
+                { label: "Username", icon: <User size={14} />, value: user.username },
+                { label: "Email Address", icon: <Mail size={14} />, value: user.email },
+                { label: "Phone Number", icon: <Phone size={14} />, value: user.phoneNumber },
+                { label: "Date of Birth", icon: <Calendar size={14} />, value: user.dob },
+                { label: "Gender", icon: <Camera size={14} />, value: user.gender },
               ].map(({ label, icon, value }) => (
                 <div key={label}>
                   <label className="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-black flex items-center gap-2 mb-3">
