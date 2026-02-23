@@ -1,5 +1,5 @@
 const { DataTypes } = require("sequelize");
-const { sequelize } = require("../database/Database");
+const { sequelize } = require("../database/database");
 
 const User = sequelize.define(
   "User",
@@ -12,11 +12,23 @@ const User = sequelize.define(
     username: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique:true,
     },
     email: {
       type: DataTypes.STRING,
       unique: true,
       allowNull: false,
+      validate: {
+        isEmail:true,
+      },
+    },
+    dob: {
+      type: DataTypes.DATEONLY, // Stores YYYY-MM-DD
+      allowNull: true,
+    },
+    gender: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     password: {
       type: DataTypes.STRING,
@@ -40,6 +52,14 @@ const User = sequelize.define(
     is_active: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
+    },
+    resetPasswordToken: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    resetPasswordExpires: {
+      type: DataTypes.DATE,
+      allowNull: true,
     },
   },
   {

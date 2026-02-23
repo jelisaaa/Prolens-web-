@@ -53,7 +53,39 @@ const updateUserProfile = async (req, res) => {
   }
 };
 
+const getAllUsers = async (req, res) => {
+  try {
+    const { search } = req.query;
+
+    let filter = {};
+
+    if (search) {
+      filter[Op.or] = [
+        { username: { [Op.iLike]: `%${search}%` } },
+        { email: { [Op.iLike]: `%${search}%` } },
+      ];
+    }
+
+    const users = await User.findAll({
+      where: filter,
+      attributes: { exclude: ["password"] },
+      order: [["createdAt", "DESC"]],
+    });
+
+    res.status(200).json({
+      success: true,
+      data: users,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to retrieve users",
+    });
+  }
+};
 
 
-module.exports = {getUserProfile,updateUserProfile}
+
+
+module.exports = {getUserProfile,updateUserProfile,getAllUsers}
 
