@@ -61,7 +61,106 @@ const addProduct = async (req, res) => {
   }
 };
 
+const deleteProduct = async (req, res) => {
+  try {
+    const productId = req.params.id;
+        if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: "Authentication required"
+      });
+    }
 
+    const userRole = req.user.role;
+
+    if (userRole !== "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Unauthorized: Admins only"
+      });
+    }
+    const product = await Product.findByPk(productId);
+    
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found"
+      });
+    }
+
+    await product.destroy();
+
+    return res.status(200).json({
+      success: true,
+      message: "Product deleted successfully"
+    });
+  } catch (error) {
+    console.error("DELETE PRODUCT ERROR:", error); 
+    
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message 
+    });
+  }
+};
+
+
+const updateProduct = async (req, res) => {
+  try {
+    if (!req.user || req.user.role !== "admin") {
+      return res.status(403).json({ success: false, message: "Forbidden: Admins only" });
+    }
+
+    const product = await Product.findByPk(req.params.id);
+
+    if (!product) {
+      return res.status(404).json({ success: false, message: "Equipment not found" });
+    }
+
+    const thumbnail = req.files?.thumbnail
+      ? `/uploads/${req.files.thumbnail[0].filename}`
+      : product.thumbnail;
+
+    const images = req.files?.images?.length
+      ? req.files.images.map(file => `/uploads/${file.filename}`)
+      : product.images;
+
+    const { 
+      name, 
+      rentalPrice, 
+      description, 
+      category, 
+      stock, 
+      brand, 
+      condition, 
+      specifications 
+    } = req.body;
+
+
+    await product.update({
+      name: name || product.name,
+      rentalPrice: rentalPrice || product.rentalPrice,
+      description: description || product.description,
+      category: category || product.category,
+      countInStock: stock || product.countInStock, 
+      brand: brand || product.brand,
+      condition: condition || product.condition,
+      specifications: specifications || product.specifications,
+      thumbnail,
+      images,
+    });
+
+    res.json({
+      success: true,
+      message: "Equipment updated successfully",
+      product,
+    });
+  } catch (error) {
+    console.error("updateProduct error:", error);
+    return res.status(500).json({ success: false, error: error.message });
+  }
+};
 
 const getAllProducts = async (req, res) => {
   try {
@@ -217,5 +316,5 @@ const getProductsByCategory = async (req, res) => {
 };
 
 
-module.exports = {addProduct,getAllProducts,getProductDetails,getRelatedProducts,getCategories,getProductsByCategory
+module.exports = {addProduct,deleteProduct,updateProduct,getAllProducts,getProductDetails,getRelatedProducts,getCategories,getProductsByCategory
 };
