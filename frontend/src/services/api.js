@@ -33,9 +33,7 @@ export const getProductDetailsApi = (id) => {
   return Api.get(`/api/products/${id}`, authConfig);
 };
 
-
 export const forgetPassword = (data) => Api.post('/api/user/forgetPassword', data);
-
 export const resetPassword = (data) => Api.post('/api/user/resetPassword', data);
 
 export const getProfileApi = () => Api.get("/api/user/profile", authConfig);
@@ -76,6 +74,13 @@ export const deleteProductApi = (id) => Api.delete(`/api/products/deleteproduct/
 
 export const updateProductApi = (id, data) => ApiFormData.put(`/api/products/updateProduct/${id}`, data, authConfig);
 
+export const createReviewApi = (data) => Api.post("/api/review/createreview", data, authConfig);
+export const getProductReviewsApi = (productId) => Api.get(`/api/review/getreview/${productId}`, authConfig);
+export const getReviewByIdApi = (reviewId) => Api.get(`/api/review/getreview-by-id/${reviewId}`, authConfig);
+export const updateReviewApi = (reviewId, data) => Api.put(`/api/review/updatereview/${reviewId}`, data, authConfig);
+export const deleteReviewApi = (reviewId) => Api.delete(`/api/review/deletereview/${reviewId}`, authConfig);
+
+
 
 export const getRelatedProductsApi = (id, category) => 
   Api.get("/api/products/relatedproducts", {
@@ -83,20 +88,15 @@ export const getRelatedProductsApi = (id, category) =>
   });
 
 export const fetchCategories = () => Api.get("/api/products/getcategories");
-// Fetch products for a specific category
 export const fetchProductsByCategory = (category) => 
     Api.get(`/api/products/getproductsbycategory/${category}`);
 
 
 
-// Dummy rent API
 export const rentProductApi = async (productId) => {
   console.log("Renting product:", productId);
 
-  // Simulate network delay
   await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  // Return a fake successful response
   return {
     data: {
       success: true,
