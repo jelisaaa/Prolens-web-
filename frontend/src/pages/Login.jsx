@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
+import { loginUserApi } from "../services/api";
+
 import imageImage from "../assets/Image.jpg";
 
 const Login = () => {
@@ -40,13 +42,28 @@ const Login = () => {
     setLoading(true);
 
     try {
-      
-      console.log("Login data:", formData);
+      const response = await loginUserApi(formData);
 
-      toast.success("Login successful!");
-      navigate("/");
+      console.log("Login response:", response.data);
+
+      const { token, user, message } = response.data;
+
+      if (!token || !user) throw new Error("Login failed");
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("role", user.role);
+
+      toast.success(message);
+
+      if (user.role === "admin") {
+        window.location.href = "/admindash";
+      } else {
+        window.location.href = "/userdash";
+      }
+
     } catch (error) {
-      toast.error("Login failed");
+      console.error("Login error:", error);
+      toast.error(error.response?.data?.message || error.message || "Login failed");
     } finally {
       setLoading(false);
     }
@@ -54,10 +71,10 @@ const Login = () => {
 
   return (
     <div className="flex min-h-screen">
-      
-      
+
+
       <div className="hidden lg:flex lg:w-1/2 flex-col bg-gray-900 p-12 text-white">
-        
+
         <div className="mb-8">
           <h1 className="text-4xl font-bold tracking-tight">ProLens</h1>
           <p className="text-gray-400 mt-2 text-lg">
@@ -65,7 +82,7 @@ const Login = () => {
           </p>
         </div>
 
-        
+
         <div className="flex-1 flex items-center justify-center">
           <img
             src={imageImage}
@@ -76,7 +93,7 @@ const Login = () => {
 
       </div>
 
-      
+
       <div className="w-full lg:w-1/2 flex items-center justify-center bg-gray-100 p-8 lg:p-16">
         <div className="w-full max-w-md bg-white p-10 rounded-3xl shadow-xl">
           <div className="text-center mb-8">

@@ -42,6 +42,9 @@ const EnterShippingDetails = () => {
     try {
       const response = await saveShippingApi(formData);
       if (response.data.success) {
+
+          localStorage.setItem("shipping", JSON.stringify(formData));
+
         toast.success("Logistics Updated", { id: loadingToast });
         setTimeout(() => navigate("/placeorders"), 1000);
       } else {

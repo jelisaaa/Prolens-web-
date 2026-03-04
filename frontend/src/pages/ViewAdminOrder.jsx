@@ -9,9 +9,9 @@ const ViewAdminOrders = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const tabs = ["All", "Pending", "Shipped", "Cancelled", "Returned"];
+  const tabs = ["All", "Pending", "Shipped", "Cancelled"];
   
-  const allStatuses = ["Pending", "Shipped", "Returned", "Cancelled"];
+  const allStatuses = ["Pending", "Shipped",  "Cancelled"];
 
   const fetchOrders = async () => {
     setLoading(true);

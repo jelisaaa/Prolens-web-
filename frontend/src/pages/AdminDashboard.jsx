@@ -1,161 +1,153 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom"; 
-import { 
-  Users, Package, BarChart3, ArrowUpRight, 
-  Settings, PlusCircle, Search, Bell, 
-  LayoutDashboard, ShoppingBag, Truck, LogOut 
+import { useNavigate } from "react-router-dom";
+import {
+  Users, Package, Settings, PlusCircle, Search, 
+  LayoutDashboard, ShoppingBag, Truck, LogOut, 
+  Camera, ChevronRight, Bell, Layers
 } from "lucide-react";
 
 const AdminDashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const navigate = useNavigate(); 
-
-  const handleAddProductClick = () => {
-    navigate("/addproduct");
-  };
+  const navigate = useNavigate();
 
   return (
-    <div className="flex min-h-screen bg-[#f1f3f5] font-sans text-slate-900">
+    <div className="flex min-h-screen bg-[#F4F4F7] font-sans text-[#2D2D32]">
       
-      {/* SIDEBAR NAVIGATION */}
-      <aside className="w-72 bg-white border-r border-slate-200 hidden lg:flex flex-col sticky top-0 h-screen">
+      <aside className="w-64 flex flex-col sticky top-0 h-screen bg-[#F4F4F7] border-r border-[#E5E5E9]">
         <div className="p-8">
-          <div className="flex items-center gap-3 mb-10">
-            <div className="bg-slate-950 p-2 rounded-xl">
-              <Package className="text-white w-6 h-6" />
+          <div className="flex items-center gap-2.5 mb-12">
+            <div className="bg-[#2D2D32] p-2 rounded-xl shadow-sm">
+              <Camera className="text-white w-5 h-5" />
             </div>
-            <span className="text-xl font-black tracking-tight text-slate-950">PROLENS.</span>
+            <span className="text-lg font-bold tracking-tight text-[#1A1A1E]">ProLens</span>
           </div>
 
-          <nav className="space-y-2">
-            <SidebarLink icon={<LayoutDashboard size={20}/>} label="Overview" active onClick={() => navigate("/admin/dashboard")} />
-            <SidebarLink icon={<ShoppingBag size={20}/>} label="Inventory" onClick={() => navigate("/admin/inventory")} />
-            <SidebarLink icon={<Users size={20}/>} label="Customers" onClick={() => navigate("/admin/users")} />
-            <SidebarLink icon={<Truck size={20}/>} label="Live Rentals" onClick={() => navigate("/admin/rentals")} />
-            <SidebarLink icon={<BarChart3 size={20}/>} label="Analytics" onClick={() => navigate("/admin/analytics")} />
+          <nav className="space-y-1">
+            <SidebarItem icon={<LayoutDashboard size={19} />} label="Overview" active onClick={() => navigate("/admin/dashboard")} />
+            <SidebarItem icon={<ShoppingBag size={19} />} label="Inventory" onClick={() => navigate("/viewproductlist")} />
+            <SidebarItem icon={<Users size={19} />} label="Customers" onClick={() => navigate("/viewallusers")} />
+            <SidebarItem icon={<Truck size={19} />} label="Rentals" onClick={() => navigate("/viewadminorder")} />
           </nav>
         </div>
 
-        <div className="mt-auto p-8 border-t border-slate-100">
-          <SidebarLink icon={<Settings size={20}/>} label="Settings" onClick={() => navigate("/admin/settings")} />
-          <SidebarLink icon={<LogOut size={20}/>} label="Logout" color="text-red-500" onClick={() => console.log("Logout Logic")} />
+        <div className="mt-auto p-8 border-t border-[#E5E5E9]">
+          <SidebarItem icon={<Settings size={19} />} label="Settings" onClick={() => navigate("/admin/settings")} />
+          <SidebarItem 
+            icon={<LogOut size={19} />} 
+            label="Logout" 
+            color="text-red-500" 
+            onClick={() => {
+              localStorage.removeItem("token");
+              navigate("/login");
+            }} 
+          />
         </div>
       </aside>
-      <main className="flex-1 overflow-y-auto">
-        
-        <div className="h-20 bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-30 px-8 flex items-center justify-between">
-          <div className="relative w-96">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
-            <input 
-              type="text" 
-              placeholder="Search gear, user ID, or order..." 
-              className="w-full bg-slate-100 border-none rounded-xl py-2.5 pl-10 pr-4 text-sm focus:ring-2 focus:ring-slate-950 transition-all"
+
+
+      <main className="flex-1 p-8 md:p-12 overflow-y-auto">
+                <header className="flex justify-between items-center mb-16">
+          <div className="relative group">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#A1A1A9] w-4 h-4" />
+            <input
+              type="text"
+              placeholder="Search gear..."
+              className="bg-[#EBEBEF] border-none rounded-2xl py-2.5 pl-10 pr-6 text-sm focus:ring-1 focus:ring-[#D1D1D6] transition-all outline-none w-64 md:w-80"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-          
-          <div className="flex items-center gap-6">
-            <button className="relative p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors">
-              <Bell size={22} />
-              <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+
+          <div className="flex items-center gap-5">
+            <button className="text-[#636366] hover:text-black transition-colors relative">
+              <Bell size={21} strokeWidth={1.5} />
+              <span className="absolute top-0 right-0 w-1.5 h-1.5 bg-[#FF3B30] rounded-full ring-2 ring-[#F4F4F7]"></span>
             </button>
-            <div className="h-10 w-10 rounded-full bg-slate-200 border border-slate-300 overflow-hidden cursor-pointer" onClick={() => navigate("/admin/profile")}>
-                <img src="https://ui-avatars.com/api/?name=Admin+User&background=0f172a&color=fff" alt="Admin" />
+            <div className="w-[1px] h-6 bg-[#E5E5E9]"></div>
+            <div className="h-9 w-9 rounded-full bg-white border border-[#E5E5E9] p-0.5 cursor-pointer hover:shadow-sm transition-shadow">
+               <img src="https://ui-avatars.com/api/?name=Admin&background=fff&color=000" className="rounded-full" alt="admin" />
             </div>
           </div>
+        </header>
+
+        {/* HERO */}
+        <div className="mb-14 flex justify-between items-end">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight text-[#1A1A1E]">Studio Overview</h1>
+            <p className="text-[#8E8E93] mt-1 font-medium">Control center for your professional assets.</p>
+          </div>
+          <button 
+            onClick={() => navigate("/addproduct")}
+            className="bg-[#1A1A1E] text-white px-7 py-3 rounded-2xl text-sm font-semibold hover:bg-[#2D2D32] transition-all shadow-lg shadow-black/5 active:scale-95 flex items-center gap-2"
+          >
+            <PlusCircle size={18} />
+            Add Gear
+          </button>
         </div>
 
-        <div className="p-10 max-w-7xl mx-auto">
-          <header className="mb-12">
-            <h1 className="text-4xl font-black tracking-tight text-slate-950">Dashboard Overview</h1>
-            <p className="text-slate-500 mt-2 font-medium">Monitoring system performance and rental logistics.</p>
-          </header>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+          <StatCard label="Live Revenue" value="Rs. 1.2M" sub="+Rs. 42k today" />
+          <StatCard label="Field Units" value="84" sub="12 returning soon" />
+          <StatCard label="Client Base" value="952" sub="8 new this week" />
+          <StatCard label="Stock Alert" value="03" sub="Review required" isAlert />
+        </div>
 
-          <section className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-            <MetricCard label="Net Revenue" value="Rs. 1,24.5k" trend="+14%" isPositive />
-            <MetricCard label="Active Bookings" value="84" trend="+3%" isPositive />
-            <MetricCard label="Pending Returns" value="12" trend="-2" />
-            <MetricCard label="Out of Stock" value="05" trend="Critical" isAlert />
-          </section>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 space-y-8">
-              <div className="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-200">
-                <div className="flex items-center justify-between mb-8">
-                    <h3 className="text-xl font-bold">Inventory Velocity</h3>
-                    <select className="bg-slate-50 border-slate-200 rounded-lg text-sm font-semibold p-1">
-                        <option>Last 7 Days</option>
-                        <option>Last 30 Days</option>
-                    </select>
-                </div>
-                <div className="h-64 w-full bg-slate-50 rounded-2xl flex items-center justify-center border-2 border-dashed border-slate-200">
-                   <p className="text-slate-400 font-medium">Chart Visualization: [Revenue vs Utilization]</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-6">
-              <button 
-                onClick={handleAddProductClick}
-                className="w-full text-left block p-1 bg-gradient-to-br from-slate-800 to-slate-950 rounded-[2rem] shadow-lg hover:shadow-slate-300 hover:-translate-y-1 active:scale-[0.98] transition-all duration-300"
-              >
-                 <div className="p-8 text-center text-white">
-                    <PlusCircle className="w-10 h-10 mx-auto mb-4 opacity-80" />
-                    <h4 className="text-lg font-bold">List New Gear</h4>
-                    <p className="text-slate-400 text-sm mt-1">Add items to public catalog</p>
-                 </div>
-              </button>
-              
-              <div className="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-200">
-                <h3 className="text-lg font-bold mb-6">Recent Logins</h3>
-                <div className="space-y-4">
-                  <UserActivity name="Siddharth M." time="2 mins ago" status="Online" />
-                  <UserActivity name="Anjali R." time="45 mins ago" status="Offline" />
-                  <UserActivity name="Karan W." time="1 hour ago" status="Online" />
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <ActionBox 
+            title="Rental Logistics" 
+            desc="Manage current gear in the field, process returns, and track deliveries." 
+            label="Open Orders"
+            onClick={() => navigate("/viewadminorder")}
+          />
+          <ActionBox 
+            title="Fleet Audit" 
+            desc="Inspect item conditions, update stock counts, and edit catalog details." 
+            label="View Inventory"
+            onClick={() => navigate("/viewproductlist")}
+          />
         </div>
       </main>
     </div>
   );
 };
 
-const SidebarLink = ({ icon, label, active, color = "text-slate-600", onClick }) => (
-  <button 
+
+
+const SidebarItem = ({ icon, label, active, onClick, color = "text-[#636366]" }) => (
+  <button
     onClick={onClick}
-    className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all font-bold text-sm ${active ? 'bg-slate-950 text-white shadow-lg' : `${color} hover:bg-slate-100`}`}
+    className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-xl transition-all text-sm font-semibold ${
+      active 
+      ? 'bg-white text-[#1A1A1E] shadow-sm ring-1 ring-[#E5E5E9]' 
+      : `${color} hover:text-[#1A1A1E] hover:bg-[#EBEBEF]`
+    }`}
   >
     {icon} {label}
   </button>
 );
 
-const MetricCard = ({ label, value, trend, isPositive, isAlert }) => (
-  <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
-    <p className="text-slate-500 text-[11px] uppercase tracking-widest font-bold mb-3">{label}</p>
-    <div className="flex items-end justify-between">
-      <h2 className="text-3xl font-black text-slate-950">{value}</h2>
-      <span className={`text-xs font-bold px-2 py-1 rounded-lg ${isAlert ? 'bg-red-100 text-red-600' : isPositive ? 'bg-emerald-100 text-emerald-600' : 'bg-orange-100 text-orange-600'}`}>
-        {trend}
-      </span>
-    </div>
+const StatCard = ({ label, value, sub, isAlert }) => (
+  <div className="bg-white p-7 rounded-[2rem] border border-[#E5E5E9] shadow-sm hover:shadow-md transition-shadow">
+    <span className="text-[10px] font-bold text-[#A1A1A9] uppercase tracking-[0.1em] block mb-2">{label}</span>
+    <span className={`text-2xl font-bold block mb-1 ${isAlert ? 'text-[#FF3B30]' : 'text-[#1A1A1E]'}`}>{value}</span>
+    <span className="text-xs text-[#8E8E93] font-medium">{sub}</span>
   </div>
 );
 
-const UserActivity = ({ name, time, status }) => (
-  <div className="flex items-center justify-between group cursor-default">
-    <div className="flex items-center gap-3">
-      <div className="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-[10px] font-bold">
-        {name.split(' ').map(n => n[0]).join('')}
-      </div>
-      <div>
-        <p className="text-sm font-bold text-slate-800">{name}</p>
-        <p className="text-[10px] text-slate-400">{time}</p>
-      </div>
+const ActionBox = ({ title, desc, label, onClick }) => (
+  <div 
+    onClick={onClick}
+    className="group bg-white p-10 rounded-[2.5rem] border border-[#E5E5E9] hover:border-[#D1D1D6] hover:shadow-xl hover:shadow-black/[0.02] transition-all duration-500 cursor-pointer"
+  >
+    <div className="w-12 h-12 bg-[#F4F4F7] rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500">
+      <Layers className="text-[#1A1A1E] w-6 h-6" />
     </div>
-    <span className={`w-2 h-2 rounded-full ${status === 'Online' ? 'bg-emerald-500' : 'bg-slate-300'}`}></span>
+    <h3 className="text-xl font-bold text-[#1A1A1E] mb-3">{title}</h3>
+    <p className="text-[#8E8E93] text-[15px] leading-relaxed mb-8">{desc}</p>
+    <div className="flex items-center gap-1.5 text-sm font-bold text-[#1A1A1E]">
+      {label} <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
+    </div>
   </div>
 );
 

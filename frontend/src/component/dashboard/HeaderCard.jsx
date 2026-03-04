@@ -50,7 +50,7 @@ const HeaderCard = ({ user }) => {
         
         <div className="my-4 border-t border-slate-50"></div>
 
-        <MenuLink to="/changepassword" icon={<FaKey />} label="Update Password" variant="danger" />
+        <MenuLink to="/forgot-password" icon={<FaKey />} label="Update Password" variant="danger" />
         
         <button
           onClick={logout}

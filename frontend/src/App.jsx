@@ -27,58 +27,63 @@ import ViewCategories from './pages/ViewCategories';
 import ViewOrders from './pages/ViewOrders';
 import UserOrderDetails from './pages/UserOrderDetails';
 import EditProduct from './pages/EditProduct';
+import About from './pages/About';
+import Footer from './component/Footer';
+import { getUserRole } from './protected/Auth';
+import AddReview from './pages/AddReview';
+import ViewReview from './pages/ViewReview';
+import EditReview from './pages/EditReview';
+
 
 
 function App() {
-    return (
-        <Router>
-            <Toaster />
-            <Header />
-            <Routes>
-                <Route path="/Login" element={<Login />} />
-                <Route path="/Register" element={<Register />} />
-                <Route path="/forgot-password" element={<ForgetPassword />} />
-                <Route path="/reset-password" element={<ResetPassword />} />
-                <Route path="/userdash" element={<UserDashboard />} />
-                <Route path="/my-rentals" element={<MyRentals />} />
-                <Route path="/catalog" element={<Catalog />} />
-                <Route path="/profile" element={<ProtectedRoute allowedRoles={["user", "admin"]} element={<Profile />} />} />
-                <Route path="/editprofile" element={<EditProfile />} />
-                <Route path="/addproduct" element={<AddProduct />} />
-                <Route path="/shipping" element={<EnterShippingDetails />} />
-                <Route path="/admindash" element={<ProtectedRoute allowedRoles={["admin"]} element={<AdminDashboard />} />}/>  
-                <Route path="/" element={<LandingPage />} />
-                <Route path="/viewallusers" element={<ViewAllCustomers />} />
-                <Route path="/viewproductlist" element={<ViewProductList />} />
-                <Route path="/placeorders" element={<PlaceOrder />} />
-                <Route path="/viewcart" element={<Cart />} />
-                <Route path="/product/:id" element={<ProductViewDetails />} />
+  let isAdmin = false;
+  const role = getUserRole();
+  if (role === "admin") {
+    isAdmin = true;
+  } else {
+    isAdmin = false;
+  } return (
+    <Router>
+      <Toaster />
+      {isAdmin ? <></> : <Header />}
+      <Routes>
+        <Route path="/Login" element={<Login />} />
+        <Route path="/Register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgetPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/userdash" element={<UserDashboard />} />
+        <Route path="/my-rentals" element={<MyRentals />} />
+        <Route path="/catalog" element={<Catalog />} />
+        <Route path="/profile" element={<ProtectedRoute allowedRoles={["user", "admin"]} element={<Profile />} />} />
+        <Route path="/editprofile" element={<EditProfile />} />
+        <Route path="/addproduct" element={<AddProduct />} />
+        <Route path="/shipping" element={<EnterShippingDetails />} />
+        <Route path="/admindash" element={<ProtectedRoute allowedRoles={["admin"]} element={<AdminDashboard />} />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/viewallusers" element={<ViewAllCustomers />} />
+        <Route path="/viewproductlist" element={<ViewProductList />} />
+        <Route path="/placeorders" element={<PlaceOrder />} />
+        <Route path="/viewcart" element={<Cart />} />
+        <Route path="/product/:id" element={<ProductViewDetails />} />
 
-                <Route path="/vieworderhistory" element={<OrderHistory />} />
-                <Route path="/viewadminorder" element={<ProtectedRoute allowedRoles={["admin"]} element={<ViewAdminOrders />} />} />
-                <Route path="/admin/order/:id" element={<ProtectedRoute allowedRoles={["admin"]} element={<OrderDetailsAdmin />} />} />
-                <Route path="/products" element={<ViewCategories />} />
-                <Route path="/orders" element={<ViewOrders />} />
-                <Route path="/order/:id" element={<ProtectedRoute allowedRoles={["user"]} element={<UserOrderDetails />} />} />
+        <Route path="/vieworderhistory" element={<OrderHistory />} />
+        <Route path="/viewadminorder" element={<ProtectedRoute allowedRoles={["admin"]} element={<ViewAdminOrders />} />} />
+        <Route path="/admin/order/:id" element={<ProtectedRoute allowedRoles={["admin"]} element={<OrderDetailsAdmin />} />} />
+        <Route path="/products" element={<ViewCategories />} />
+        <Route path="/orders" element={<ViewOrders />} />
+        <Route path="/order/:id" element={<ProtectedRoute allowedRoles={["user"]} element={<UserOrderDetails />} />} />
 
-                <Route path="/editproduct/:id" element={<ProtectedRoute allowedRoles={["admin"]} element={<EditProduct />} />} />
+        <Route path="/editproduct/:id" element={<ProtectedRoute allowedRoles={["admin"]} element={<EditProduct />} />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/addreview/:productId" element={<ProtectedRoute allowedRoles={["user"]} element={<AddReview />} />} />
+        <Route path="/viewreview/:productId" element={<ProtectedRoute allowedRoles={["user", "admin"]} element={<ViewReview />} />} />
+        <Route path="/editreview/:reviewId" element={<ProtectedRoute allowedRoles={["user", "admin"]} element={<EditReview />} />} />
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-            </Routes>
-        </Router>
-    )
+      </Routes>
+      {isAdmin ? <></> : <Footer />}
+    </Router>
+  )
 }
 
 export default App
