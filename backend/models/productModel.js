@@ -47,7 +47,11 @@ const Product = sequelize.define("Product", {
   stock: {
     type: DataTypes.INTEGER,
     defaultValue: 1,
-  }
+  },
+isActive: {
+  type: DataTypes.BOOLEAN,
+  defaultValue: true
+}
 });
 
 module.exports = Product;

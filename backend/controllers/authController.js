@@ -1,7 +1,5 @@
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
-const OTP = require("../models/otpModel.js");
-const sendEmail = require("../helpers/emailHelper.js");
 const jwt = require("jsonwebtoken");
 
 const registerUser = async (req, res) => {
@@ -102,6 +100,12 @@ const loginUser = async (req, res) => {
     res.status(200).json({
       message: "Login successful",
       token,
+      user: {
+        id:user.user_id,
+        username:user.username,
+        email:user.email,
+        role:user.role,
+      },
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -119,10 +123,9 @@ const forgetPassword = async (req, res) => {
         message: "Email does not exist",
       });
     }
-    // Here you would typically generate a reset token and send an email.
     const { sendEmail } = require("../helpers/emailhelper");
     const resetToken = jwt.sign(
-      { id: user.id },
+      { id: user.user_id },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
@@ -145,7 +148,6 @@ const forgetPassword = async (req, res) => {
     });
   }
 };
-
 const resetpassword = async (req, res) => {
   try {
     const { token, password } = req.body;
@@ -171,6 +173,7 @@ const resetpassword = async (req, res) => {
     });
   }
 };
+
 
 
 module.exports={registerUser,loginUser,forgetPassword,resetpassword}

@@ -23,13 +23,21 @@ const Cart = sequelize.define(
       allowNull: false,
       defaultValue: 1,
     },
+    // ✅ Added for ProLens Rental Tracking
+    startDate: {
+      type: DataTypes.DATEONLY,
+      allowNull: true, 
+    },
+    endDate: {
+      type: DataTypes.DATEONLY,
+      allowNull: true,
+    }
   },
   {
     tableName: "cart_details",
-    timestamps: true, 
+    timestamps: true,
   }
 );
-
 
 Cart.belongsTo(Product, { foreignKey: "product_id", as: "product" });
 

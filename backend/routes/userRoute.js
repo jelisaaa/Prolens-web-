@@ -1,7 +1,7 @@
 const express = require("express").Router();
 
 const {loginUser,registerUser, forgetPassword, resetpassword,} = require("../controllers/authController");
-const { getUserProfile, updateUserProfile, getAllUsers } = require("../controllers/userController");
+const { getUserProfile, updateUserProfile, getAllUsers, updateUserStatus } = require("../controllers/userController");
 const protect = require("../helpers/protect");
 const authGuard = require("../helpers/authGuard");
 const isAdmin = require("../helpers/isAdmin");
@@ -17,7 +17,8 @@ express.post("/resetPassword",resetpassword);
 express.get("/profile",protect,getUserProfile);
 express.put("/profile",protect,updateUserProfile);
 
-express.get("/viewallusers",authGuard,isAdmin, getAllUsers)
+express.get("/viewallusers",authGuard,isAdmin, getAllUsers);
+express.put('/update-status/:id', authGuard, isAdmin, updateUserStatus);
 
 
 

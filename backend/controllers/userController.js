@@ -84,8 +84,28 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+const updateUserStatus = async (req, res) => {
+  try {
+    const { id } = req.params; 
+    const { is_active } = req.body;
+    const [updatedCount] = await User.update(
+      { is_active: is_active },
+      { where: { user_id: id } } 
+    );
+
+    if (updatedCount === 0) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: `User is now ${is_active ? 'Active' : 'Suspended'}`
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
 
 
-
-module.exports = {getUserProfile,updateUserProfile,getAllUsers}
+module.exports = {getUserProfile,updateUserProfile,getAllUsers,updateUserStatus}
 

@@ -184,7 +184,7 @@ const getOrderDetails = async (req, res) => {
 
 const updateOrderStatus = async (req, res) => {
   try {
-    const { id } = req.params; // This is the ID from the URL
+    const { id } = req.params; 
     const { status } = req.body;
 
     const validStatuses = ["Pending", "Processing", "Shipped", "Delivered", "Cancelled"];
@@ -192,8 +192,7 @@ const updateOrderStatus = async (req, res) => {
       return res.status(400).json({ success: false, message: "Invalid status type" });
     }
 
-    // ✅ FIX: Use findOne with the specific primary key column 'order_id'
-    // instead of findByPk if your model uses 'order_id' as the PK.
+    
     const order = await Order.findOne({ where: { order_id: id } });
 
     if (!order) {
